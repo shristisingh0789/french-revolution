@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>La Révolution Française</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0a0e1a;
+    --deep: #0f1624;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --crimson: #8b1a1a;
+    --crimson-light: #c0392b;
+    --cream: #f5edd6;
+    --parchment: #e8d5a3;
+    --text: #d4c5a0;
+    --white: #faf6ec;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Crimson Text', serif;
+    font-size: 18px;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,14,26,0.96);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--crimson-light); }
+  .nav-links { display: flex; gap: 0; }
+  .nav-link {
+    background: none; border: none; cursor: pointer;
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem; letter-spacing: 0.08em;
+    color: var(--text);
+    padding: 0.4rem 1.1rem;
+    transition: color 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--gold); }
+  .nav-link.active {
+    border-bottom: 2px solid var(--gold);
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; min-height: 100vh; padding-top: 64px; }
+  .page.active { display: block; }
+
+  /* ──────────────────────────────
+     HOME PAGE
+  ────────────────────────────── */
+  #page-home {
+    background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+  }
+  /* Decorative parchment lines */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg,
+        transparent,
+        transparent 39px,
+        rgba(201,168,76,0.06) 40px
+      );
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Crimson Text', serif;
+    font-style: italic; font-size: 1.1rem;
+    color: var(--gold); letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900; line-height: 1.0;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em {
+    display: block; font-style: italic;
+    color: var(--gold); font-size: 0.6em;
+  }
+  .hero-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic; font-size: 1.3rem;
+    color: var(--parchment); max-width: 600px;
+    margin: 1.8rem auto 2.5rem;
+    line-height: 1.7;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-divider {
+    width: 180px; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .btn-primary {
+    background: var(--gold); color: var(--navy);
+    border: none; cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.85rem 2.2rem;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--gold); color: var(--gold);
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.85rem 2.2rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(201,168,76,0.12); }
+
+  /* Timeline strip */
+  .timeline-strip {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 3rem 2rem;
+    overflow: hidden;
+  }
+  .timeline-strip h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.6rem;
+    color: var(--gold); text-align: center;
+    margin-bottom: 2.5rem; letter-spacing: 0.05em;
+  }
+  .timeline {
+    display: flex; gap: 0;
+    position: relative; max-width: 1100px; margin: 0 auto;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; top: 28px; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .tl-item {
+    flex: 1; text-align: center; padding: 0 0.5rem; position: relative;
+  }
+  .tl-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--gold); margin: 0 auto 0.8rem;
+    border: 2px solid var(--navy); position: relative; z-index: 1;
+  }
+  .tl-year {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    color: var(--gold-light); font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+  .tl-event {
+    font-style: italic; font-size: 0.85rem;
+    color: var(--text); line-height: 1.4;
+  }
+
+  /* Cards row */
+  .cards-section {
+    padding: 4rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .cards-section h2 {
+    font-family: 'Playfair Display', serif; font-size: 2rem;
+    color: var(--cream); text-align: center; margin-bottom: 2.5rem;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .card {
+    background: var(--deep);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .card:hover { border-color: var(--gold); transform: translateY(-4px); }
+  .card-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .card h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--gold-light); margin-bottom: 0.6rem;
+  }
+  .card p { font-size: 0.95rem; color: var(--text); line-height: 1.6; }
+
+  /* ──────────────────────────────
+     ABOUT PAGE
+  ────────────────────────────── */
+  #page-about {
+    background: var(--navy);
+  }
+  .about-hero {
+    background: linear-gradient(160deg, var(--deep) 0%, #1a0a0a 100%);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+  }
+  .about-hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,3.5rem);
+    color: var(--cream); margin-bottom: 1rem;
+  }
+  .about-hero p {
+    font-family: 'IM Fell English', serif; font-style: italic;
+    font-size: 1.2rem; color: var(--parchment); max-width: 650px; margin: 0 auto;
+    line-height: 1.7;
+  }
+  .about-content {
+    max-width: 900px; margin: 0 auto; padding: 3rem 2rem;
+  }
+  .about-section { margin-bottom: 3rem; }
+  .about-section h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.8rem;
+    color: var(--gold); margin-bottom: 1rem;
+    border-left: 3px solid var(--gold); padding-left: 1rem;
+  }
+  .about-section p {
+    line-height: 1.8; color: var(--text); margin-bottom: 1rem; font-size: 1.05rem;
+  }
+  .about-section ul {
+    list-style: none; padding: 0;
+  }
+  .about-section ul li {
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    position: relative; color: var(--text); line-height: 1.6;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .about-section ul li::before {
+    content: '⚜'; position: absolute; left: 0;
+    color: var(--gold); font-size: 0.8rem; top: 0.55rem;
+  }
+  .quote-block {
+    border-left: 3px solid var(--crimson-light);
+    padding: 1.2rem 1.5rem;
+    background: rgba(139,26,26,0.08);
+    margin: 2rem 0;
+  }
+  .quote-block blockquote {
+    font-family: 'IM Fell English', serif; font-style: italic;
+    font-size: 1.3rem; color: var(--cream); line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+  .quote-block cite { font-size: 0.9rem; color: var(--gold); }
+
+  /* Team / project info */
+  .team-section {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .team-section h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.8rem;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .team-section p { color: var(--text); font-size: 1rem; line-height: 1.7; max-width: 600px; margin: 0 auto; }
+
+  /* ──────────────────────────────
+     MAP PAGE
+  ────────────────────────────── */
+  #page-map { background: var(--navy); }
+  .map-header {
+    text-align: center; padding: 2.5rem 2rem 1.5rem;
+    background: var(--deep);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .map-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem,4vw,2.8rem); color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+  .map-header p {
+    font-style: italic; color: var(--parchment); font-size: 1rem;
+  }
+  .map-wrapper {
+    display: flex; gap: 0;
+    height: calc(100vh - 200px); min-height: 500px;
+  }
+  /* SVG map container */
+  .map-container {
+    flex: 1 1 60%;
+    position: relative; overflow: hidden;
+    background: #0d1520;
+    border-right: 1px solid rgba(201,168,76,0.2);
+  }
+  .map-container svg {
+    width: 100%; height: 100%;
+  }
+  /* Info sidebar */
+  .map-sidebar {
+    flex: 0 0 340px;
+    background: var(--deep);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    height: 100%; padding: 2rem;
+    text-align: center; color: rgba(201,168,76,0.4);
+  }
+  .sidebar-placeholder .big-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .sidebar-placeholder p { font-style: italic; font-size: 1rem; line-height: 1.6; }
+  .location-panel {
+    display: none; flex-direction: column; height: 100%; overflow-y: auto;
+  }
+  .location-panel.active { display: flex; }
+  .loc-image-banner {
+    background: var(--crimson);
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    flex-shrink: 0;
+  }
+  .loc-image-banner .loc-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .loc-image-banner h2 {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem;
+    color: var(--cream); margin-bottom: 0.3rem;
+  }
+  .loc-image-banner .loc-year {
+    font-size: 0.85rem; color: var(--gold-light); letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .loc-body { padding: 1.2rem 1.4rem; flex: 1; }
+  .loc-body p {
+    font-size: 0.95rem; line-height: 1.75; color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .loc-body h3 {
+    font-family: 'Playfair Display', serif; color: var(--gold);
+    font-size: 1rem; margin-bottom: 0.6rem; margin-top: 1rem;
+  }
+  .youtube-btn {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: #c0392b; color: #fff;
+    border: none; cursor: pointer; width: 100%;
+    padding: 0.85rem 1.2rem; margin-top: 0.5rem;
+    font-family: 'Crimson Text', serif; font-size: 1rem;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .youtube-btn:hover { background: #e74c3c; }
+  .youtube-btn .yt-icon {
+    width: 28px; height: 28px; background: #fff; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .youtube-btn .yt-icon svg { width: 16px; height: 16px; fill: #c0392b; }
+  .close-panel-btn {
+    margin: 0.8rem 1.4rem;
+    background: transparent; border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); cursor: pointer;
+    font-family: 'Crimson Text', serif; font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    display: flex; align-items: center; gap: 0.4rem;
+    width: calc(100% - 2.8rem);
+  }
+  .close-panel-btn:hover { background: rgba(201,168,76,0.1); }
+
+  /* Pin styles */
+  .map-pin {
+    cursor: pointer;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+  }
+  .map-pin circle.outer { fill: var(--gold); }
+  .map-pin circle.inner { fill: var(--crimson); }
+  .map-pin circle.pulse-ring {
+    fill: rgba(201,168,76,0.25);
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulseRing 2s ease-out infinite;
+  }
+  .map-pin:hover circle.pulse-ring {
+    animation: none;
+    display: none;
+  }
+  .map-pin:hover circle.outer { fill: var(--gold-light); }
+  .map-pin.active circle.outer { fill: var(--gold-light); }
+  .map-pin.active circle.pulse-ring { animation: none; display: none; }
+  .pin-label {
+    font-family: 'Crimson Text', serif; font-size: 11px;
+    fill: var(--cream); pointer-events: none;
+  }
+
+  /* Legend */
+  .map-legend {
+    padding: 0.6rem 1rem;
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;
+    font-size: 0.8rem; color: var(--text);
+  }
+  .map-legend span { color: var(--gold); font-weight: 600; }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseRing {
+    0%   { transform: scale(1);   opacity: 0.7; }
+    100% { transform: scale(3);   opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .map-wrapper { flex-direction: column; height: auto; }
+    .map-container { min-height: 55vw; }
+    .map-sidebar { flex: none; height: auto; min-height: 250px; }
+    .nav-links .nav-link { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">La <span>Révolution</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')" id="nav-home">Home</button>
+    <button class="nav-link" onclick="showPage('about')" id="nav-about">About</button>
+    <button class="nav-link" onclick="showPage('map')" id="nav-map">🗺 Interactive Map</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════
+     HOME PAGE
+══════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <section class="hero">
+    <p class="hero-eyebrow">1789 – 1799 · France</p>
+    <h1 class="hero-title">
+      La Révolution<br>
+      <em>Française</em>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-subtitle">
+      "Liberté, Égalité, Fraternité" — A decade that shook the world, 
+      toppled a monarchy, and reforged the very idea of nationhood.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('map')">Explore the Map</button>
+      <button class="btn-secondary" onclick="showPage('about')">Learn More</button>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <div class="timeline-strip">
+    <h2>⚜ A Decade of Revolution</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1789</div>
+        <div class="tl-event">Storming of the Bastille</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1791</div>
+        <div class="tl-event">Constitutional Monarchy</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1792</div>
+        <div class="tl-event">First French Republic</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1793</div>
+        <div class="tl-event">Reign of Terror begins</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1794</div>
+        <div class="tl-event">Fall of Robespierre</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">1799</div>
+        <div class="tl-event">Napoleon's Coup</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview cards -->
+  <div class="cards-section">
+    <h2>Key Themes of the Revolution</h2>
+    <div class="cards-grid">
+      <div class="card" onclick="showPage('about')">
+        <div class="card-icon">⚖️</div>
+        <h3>Causes</h3>
+        <p>Financial crisis, social inequality among the Three Estates, and Enlightenment ideals sparked widespread unrest across France.</p>
+      </div>
+      <div class="card" onclick="showPage('map')">
+        <div class="card-icon">🏰</div>
+        <h3>Key Locations</h3>
+        <p>From the Bastille to Versailles, explore the places where history was made on our interactive map of France.</p>
+      </div>
+      <div class="card" onclick="showPage('about')">
+        <div class="card-icon">👑</div>
+        <h3>Major Figures</h3>
+        <p>Robespierre, Marie Antoinette, Danton, Napoleon Bonaparte — the personalities who shaped a revolution.</p>
+      </div>
+      <div class="card" onclick="showPage('about')">
+        <div class="card-icon">🌍</div>
+        <h3>Legacy</h3>
+        <p>The Declaration of the Rights of Man and the ideals of liberty inspired revolutions across the globe for centuries.</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════════
+     ABOUT PAGE
+══════════════════════════════════ -->
+<div id="page-about" class="page">
+
+  <div class="about-hero">
+    <h1>About the French Revolution</h1>
+    <p>A comprehensive overview of the causes, events, key figures, and lasting legacy of France's most transformative decade.</p>
+  </div>
+
+  <div class="about-content">
+
+    <div class="about-section">
+      <h2>What Was the French Revolution?</h2>
+      <p>The French Revolution (1789–1799) was a period of radical political and social transformation in France. It overthrew the monarchy, established a republic, and culminated in Napoleon Bonaparte's rise to power. The Revolution is widely regarded as one of the most important events in world history.</p>
+      <p>It fundamentally challenged the idea that kings ruled by divine right and established that sovereignty rested with the people — principles that continue to shape democracies worldwide.</p>
+    </div>
+
+    <div class="quote-block">
+      <blockquote>"The secret of freedom lies in educating people, whereas the secret of tyranny is in keeping them ignorant."</blockquote>
+      <cite>— Maximilien Robespierre</cite>
+    </div>
+
+    <div class="about-section">
+      <h2>Root Causes</h2>
+      <ul>
+        <li><strong>Financial crisis:</strong> France was nearly bankrupt after costly wars, including support for the American Revolution.</li>
+        <li><strong>Social inequality:</strong> The Three Estates system concentrated wealth and privilege among the clergy and nobility, while commoners bore the tax burden.</li>
+        <li><strong>Food scarcity:</strong> Poor harvests in 1788 led to bread shortages and widespread hunger among the poor.</li>
+        <li><strong>Enlightenment ideas:</strong> Thinkers like Rousseau, Voltaire, and Montesquieu challenged absolute monarchy and championed liberty and reason.</li>
+        <li><strong>Weak leadership:</strong> King Louis XVI was indecisive and out of touch with the suffering of his people.</li>
+      </ul>
+    </div>
+
+    <div class="about-section">
+      <h2>Major Phases</h2>
+      <p><strong>The Constitutional Phase (1789–1792):</strong> The National Assembly drafted a constitution limiting the king's power. The Declaration of the Rights of Man and of the Citizen was adopted.</p>
+      <p><strong>The Radical Phase / Reign of Terror (1793–1794):</strong> The Committee of Public Safety, led by Robespierre, executed thousands of perceived enemies of the Revolution — including King Louis XVI and Marie Antoinette.</p>
+      <p><strong>The Directory (1795–1799):</strong> A more moderate government attempted to stabilize France, but corruption and instability persisted until Napoleon's coup ended the Revolution.</p>
+    </div>
+
+    <div class="about-section">
+      <h2>Key Figures</h2>
+      <ul>
+        <li><strong>King Louis XVI</strong> — The last king of France before the Revolution; executed by guillotine in January 1793.</li>
+        <li><strong>Marie Antoinette</strong> — Queen consort, symbol of royal excess; executed in October 1793.</li>
+        <li><strong>Maximilien Robespierre</strong> — Leader of the radical Jacobin faction; architect of the Reign of Terror.</li>
+        <li><strong>Georges Danton</strong> — Powerful orator and early revolutionary leader; later executed during the Terror.</li>
+        <li><strong>Napoleon Bonaparte</strong> — Military general who ended the Revolution with his coup of 18 Brumaire (1799).</li>
+        <li><strong>Jean-Paul Marat</strong> — Radical journalist and politician; assassinated in his bath by Charlotte Corday.</li>
+      </ul>
+    </div>
+
+    <div class="about-section">
+      <h2>The Legacy</h2>
+      <p>The French Revolution transformed not just France, but the entire world. Its core ideals — <em>Liberté, Égalité, Fraternité</em> — became the rallying cry for democratic movements everywhere. The Revolution:</p>
+      <ul>
+        <li>Established the principle that governments derive authority from the people, not divine right.</li>
+        <li>Inspired independence movements in Latin America, the Caribbean, and Europe.</li>
+        <li>Led to the rise of Napoleon and the reshaping of European borders.</li>
+        <li>Introduced the metric system and codified civil law (the Napoleonic Code).</li>
+        <li>Planted the seeds for modern concepts of human rights and citizenship.</li>
+      </ul>
+    </div>
+
+    <div class="quote-block">
+      <blockquote>"Liberty, equality, fraternity — or death; the last, much the easiest to bestow."</blockquote>
+      <cite>— Charles Dickens, A Tale of Two Cities</cite>
+    </div>
+
+  </div>
+
+  <div class="team-section">
+    <h2>About This Project</h2>
+    <p>This website was created as part of a French Group PBL (Project-Based Learning) assignment. Our team chose the French Revolution as our topic to explore its profound impact on modern civilization. Navigate to the <strong style="color:var(--gold); cursor:pointer;" onclick="showPage('map')">Interactive Map</strong> to discover the key locations of the Revolution.</p>
+  </div>
+
+</div><!-- /page-about -->
+
+
+<!-- ══════════════════════════════════
+     MAP PAGE
+══════════════════════════════════ -->
+<div id="page-map" class="page">
+
+  <div class="map-header">
+    <h1>Interactive Map of the French Revolution</h1>
+    <p>Click on a ⚑ pin to discover the history and significance of each location</p>
+  </div>
+
+  <div class="map-wrapper">
+
+    <!-- SVG MAP OF FRANCE -->
+    <div class="map-container">
+      <svg id="france-map" viewBox="0 0 620 560" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="seaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#0a1628"/>
+            <stop offset="100%" style="stop-color:#0d1f35"/>
+          </linearGradient>
+          <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1a2b1a"/>
+            <stop offset="100%" style="stop-color:#162414"/>
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Sea background -->
+        <rect width="620" height="560" fill="url(#seaGrad)"/>
+
+        <!-- Grid lines (faint) -->
+        <g stroke="rgba(201,168,76,0.05)" stroke-width="1">
+          <line x1="0" y1="100" x2="620" y2="100"/>
+          <line x1="0" y1="200" x2="620" y2="200"/>
+          <line x1="0" y1="300" x2="620" y2="300"/>
+          <line x1="0" y1="400" x2="620" y2="400"/>
+          <line x1="0" y1="500" x2="620" y2="500"/>
+          <line x1="100" y1="0" x2="100" y2="560"/>
+          <line x1="200" y1="0" x2="200" y2="560"/>
+          <line x1="300" y1="0" x2="300" y2="560"/>
+          <line x1="400" y1="0" x2="400" y2="560"/>
+          <line x1="500" y1="0" x2="500" y2="560"/>
+        </g>
+
+        <!-- France mainland shape (simplified but recognisable) -->
+        <path id="france-land"
+          d="
+            M 210 30
+            L 260 22
+            L 320 28
+            L 380 40
+            L 430 60
+            L 470 90
+            L 510 110
+            L 540 135
+            L 555 165
+            L 560 200
+            L 555 230
+            L 540 255
+            L 560 280
+            L 570 310
+            L 555 340
+            L 530 370
+            L 510 400
+            L 490 430
+            L 460 455
+            L 420 470
+            L 380 480
+            L 340 490
+            L 295 488
+            L 250 480
+            L 210 460
+            L 175 435
+            L 145 405
+            L 120 375
+            L 105 340
+            L 90 300
+            L 80 265
+            L 70 230
+            L 75 195
+            L 85 165
+            L 100 135
+            L 120 108
+            L 145 85
+            L 175 60
+            Z
+          "
+          fill="url(#landGrad)"
+          stroke="rgba(201,168,76,0.4)"
+          stroke-width="1.5"
+        />
+
+        <!-- Internal region lines (subtle) -->
+        <g stroke="rgba(201,168,76,0.1)" stroke-width="0.8" fill="none">
+          <line x1="300" y1="50" x2="320" y2="300"/>
+          <line x1="100" y1="200" x2="500" y2="220"/>
+          <line x1="120" y1="350" x2="450" y2="330"/>
+        </g>
+
+        <!-- Compass rose -->
+        <g transform="translate(570, 50)">
+          <circle cx="0" cy="0" r="22" fill="rgba(10,14,26,0.7)" stroke="rgba(201,168,76,0.4)" stroke-width="1"/>
+          <text x="0" y="-13" text-anchor="middle" fill="#c9a84c" font-size="9" font-family="serif">N</text>
+          <text x="0" y="18" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="serif">S</text>
+          <text x="14" y="4"  text-anchor="middle" fill="#c9a84c" font-size="8" font-family="serif">E</text>
+          <text x="-14" y="4" text-anchor="middle" fill="#c9a84c" font-size="8" font-family="serif">W</text>
+          <line x1="0" y1="-18" x2="0" y2="18" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+          <line x1="-18" y1="0" x2="18" y2="0" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+        </g>
+
+        <!-- LOCATION PINS -->
+        <!-- Each pin: cx/cy = approx geographic position on map -->
+
+        <!-- 1. Paris -->
+        <g class="map-pin" id="pin-paris" onclick="openLocation('paris')" transform="translate(305, 175)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5" font-weight="bold">Paris</text>
+        </g>
+
+        <!-- 2. Versailles -->
+        <g class="map-pin" id="pin-versailles" onclick="openLocation('versailles')" transform="translate(283, 190)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="-65" y="5">Versailles</text>
+        </g>
+
+        <!-- 4. Nantes -->
+        <g class="map-pin" id="pin-nantes" onclick="openLocation('nantes')" transform="translate(150, 265)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5">Nantes</text>
+        </g>
+
+        <!-- 5. Marseille -->
+        <g class="map-pin" id="pin-marseille" onclick="openLocation('marseille')" transform="translate(400, 430)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5">Marseille</text>
+        </g>
+
+        <!-- 6. Bordeaux -->
+        <g class="map-pin" id="pin-bordeaux" onclick="openLocation('bordeaux')" transform="translate(195, 360)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5">Bordeaux</text>
+        </g>
+
+        <!-- 7. Strasbourg -->
+        <g class="map-pin" id="pin-strasbourg" onclick="openLocation('strasbourg')" transform="translate(475, 175)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5">Strasbourg</text>
+        </g>
+
+        <!-- 8. Vendée region -->
+        <g class="map-pin" id="pin-vendee" onclick="openLocation('vendee')" transform="translate(165, 300)">
+          <circle class="pulse-ring" cx="0" cy="0" r="6" fill="rgba(201,168,76,0.3)" stroke="none"/>
+          <circle class="outer" cx="0" cy="0" r="10" stroke="rgba(201,168,76,0.8)" stroke-width="1.5"/>
+          <circle class="inner" cx="0" cy="0" r="5"/>
+          <text class="pin-label" x="13" y="5">Vendée</text>
+        </g>
+
+      </svg>
+    </div><!-- /map-container -->
+
+    <!-- SIDEBAR -->
+    <div class="map-sidebar" id="map-sidebar">
+
+      <!-- Placeholder when nothing selected -->
+      <div class="sidebar-placeholder" id="sidebar-placeholder">
+        <div class="big-icon">⚑</div>
+        <p>Click any pin on the map to reveal the history and significance of that location — and watch a related video.</p>
+      </div>
+
+      <!-- Dynamic location panel -->
+      <div class="location-panel" id="location-panel">
+        <div class="loc-image-banner">
+          <div class="loc-icon" id="loc-icon">🏰</div>
+          <h2 id="loc-name">Location Name</h2>
+          <div class="loc-year" id="loc-year">Year · Category</div>
+        </div>
+        <button class="close-panel-btn" onclick="closePanel()">← Back to map</button>
+        <div class="loc-body">
+          <p id="loc-desc">Description goes here.</p>
+          <h3>🎥 Watch on YouTube</h3>
+          <a class="youtube-btn" id="loc-youtube" href="#" target="_blank" rel="noopener">
+            <span class="yt-icon">
+              <svg viewBox="0 0 24 24"><path d="M10 15.5v-7l6 3.5-6 3.5z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </span>
+            Watch Documentary / Video
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /map-sidebar -->
+
+  </div><!-- /map-wrapper -->
+
+  <div class="map-legend">
+    <span>⚑</span> Click any pin on the map &nbsp;|&nbsp;
+    <span>🏰</span> Bastille &amp; Royal &nbsp;|&nbsp;
+    <span>⚖️</span> Political centres &nbsp;|&nbsp;
+    <span>🩸</span> Sites of uprising &nbsp;|&nbsp;
+    <span>🎶</span> Cultural significance
+  </div>
+
+</div><!-- /page-map -->
+
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════ -->
+<script>
+// ── PAGE NAVIGATION ──────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ── LOCATION DATA ─────────────────────────────────────────
+// *** REPLACE the youtube links below with your own links! ***
+const locations = {
+  paris: {
+    name: "Paris — The Bastille",
+    icon: "🏰",
+    year: "14 July 1789 · Symbol of Revolution",
+    youtube: "https://youtu.be/nkw3adwDVPc?si=0-8dwCExVS_EjjVA",
+    desc: `The storming of the Bastille on 14 July 1789 is the defining moment of the French Revolution. The Bastille was a royal fortress-prison in Paris that symbolised the tyranny and oppression of the Ancien Régime. When King Louis XVI dismissed his popular finance minister Necker, Parisians feared a royalist crackdown. On the morning of 14 July, a crowd of revolutionaries and mutinous guards stormed the fortress, freeing seven prisoners and seizing its weapons. Though modest in military terms, the act was a thunderclap — the people had dared to strike against royal authority. Today, Bastille Day (14 July) is France's national holiday.`
+  },
+  versailles: {
+    name: "Palace of Versailles",
+    icon: "👑",
+    year: "5 Oct 1789 · Royal Seat of Power",
+    youtube: "https://youtu.be/qrKysG9aiic?si=Dg61gWkWiVMdmDYz",
+    desc: `The Palace of Versailles, located just outside Paris, was the seat of the French monarchy and the symbol of absolute royal power. Built by Louis XIV, it housed the royal court far from the turbulent streets of Paris. In May 1789, the Estates-General convened here, igniting the political crisis that led to revolution. On 5–6 October 1789, a crowd of Parisian women, angered by bread shortages, marched to Versailles and forced the royal family to return to Paris — a dramatic moment that placed the king under the watchful eye of the people. The palace became a museum in 1793.`
+  },
+  nantes: {
+    name: "Nantes — The Drownings",
+    icon: "🌊",
+    year: "1793–1794 · Mass Executions",
+    youtube: "https://youtu.be/kDPgG1Jp2dA?si=G0uaLnlWkvIaOnNN",
+    desc: `Nantes witnessed some of the most horrific atrocities of the Reign of Terror. Under the orders of Jean-Baptiste Carrier, the city's representative-on-mission, thousands of counter-revolutionary prisoners — including priests, nuns, and civilians — were loaded onto barges which were then sunk in the Loire River. These mass drownings, known as the "noyades," killed an estimated 2,000–4,000 people in just a few months. Carrier also orchestrated mass shootings. His actions were so extreme that even Robespierre's government eventually recalled and later executed him. Nantes remains one of the darkest symbols of Revolutionary excess.`
+  },
+  marseille: {
+    name: "Marseille — La Marseillaise",
+    icon: "🎶",
+    year: "1792 · Birth of France's Anthem",
+    youtube: "https://youtu.be/K2nV_3qYrCE?si=HP7PbMEifdvSAFW9",
+    desc: `Marseille gave its name to France's national anthem, "La Marseillaise," one of the most famous revolutionary songs in history. Composed in 1792 by Claude Joseph Rouget de Lisle for the Army of the Rhine, the song was adopted as the marching song of volunteers from Marseille who walked to Paris to join the revolutionary forces. When these volunteers sang it as they entered the capital, Parisians named the stirring anthem after them. With its rousing call to arms and defence of liberty, La Marseillaise became an enduring symbol of the revolutionary spirit and was officially adopted as France's national anthem in 1795.`
+  },
+  bordeaux: {
+    name: "Bordeaux — The Girondins",
+    icon: "⚖️",
+    year: "1791–1793 · Political Power Base",
+    youtube: "https://youtu.be/kpX-qtPdYxQ?si=50AqD5Bpg9_c6P2e",
+    desc: `Bordeaux was the home region of the Girondins (named after the Gironde department), a moderate republican faction that played a crucial role in the early stages of the Revolution. The Girondins dominated the Legislative Assembly from 1791 and the National Convention until their downfall in 1793. They supported the republic and the revolution but opposed the radical centralisation championed by the Jacobins and Robespierre. In June 1793, the Jacobins orchestrated a coup that expelled the leading Girondin deputies. Many were arrested and guillotined during the Reign of Terror. Their fall marked the beginning of the radical phase of the Revolution.`
+  },
+  strasbourg: {
+    name: "Strasbourg — La Marseillaise's Origin",
+    icon: "🎵",
+    year: "April 1792 · Birthplace of the Anthem",
+    youtube: "https://youtu.be/gK6w5aiToms?si=ZXmdTo2W5ob7lfs3",
+    desc: `Strasbourg, then on the frontier of revolutionary France facing the threat of Austrian and Prussian invasion, is the city where "La Marseillaise" was actually composed. On the night of 25–26 April 1792, military engineer Captain Claude Joseph Rouget de Lisle composed the "War Song for the Army of the Rhine" at the request of the mayor of Strasbourg, Philippe-Frédéric de Dietrich. The song was a direct response to the declaration of war against Austria. It spread rapidly through France, and when volunteers from Marseille marched north singing it, the song became forever associated with that city. Strasbourg's position on the Rhine made it a flashpoint of revolutionary fervour and foreign threats.`
+  },
+  vendee: {
+    name: "Vendée — The Counter-Revolution",
+    icon: "⚔️",
+    year: "1793–1796 · Royalist Uprising",
+    youtube: "https://youtu.be/MfX4H3c2OJ4?si=FWc6sOJZmRfoWnex",
+    desc: `The Vendée region became the site of the most serious armed uprising against the French Revolution — the War in the Vendée (1793–1796). Deeply Catholic and royalist, the peasants and nobles of the Vendée rose up against the Revolutionary government in response to the execution of the king, the persecution of the Catholic Church, and the forced military conscription. The rebellion was brutal on both sides. The Republican army launched a devastating "infernal columns" campaign (colonnes infernales) in 1794, massacring civilians across the region. Estimates of total deaths range from 150,000 to over 300,000. The Vendée Uprising remains one of the most contested and tragic episodes of the entire Revolutionary period.`
+  }
+};
+
+// ── OPEN / CLOSE PANEL ────────────────────────────────────
+function openLocation(id) {
+  const loc = locations[id];
+  if (!loc) return;
+
+  // update content
+  document.getElementById('loc-icon').textContent  = loc.icon;
+  document.getElementById('loc-name').textContent  = loc.name;
+  document.getElementById('loc-year').textContent  = loc.year;
+  document.getElementById('loc-desc').textContent  = loc.desc;
+  document.getElementById('loc-youtube').href      = loc.youtube;
+
+  // show/hide
+  document.getElementById('sidebar-placeholder').style.display = 'none';
+  document.getElementById('location-panel').classList.add('active');
+
+  // highlight pin
+  document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
+  const pin = document.getElementById('pin-' + id);
+  if (pin) pin.classList.add('active');
+}
+
+function closePanel() {
+  document.getElementById('sidebar-placeholder').style.display = 'flex';
+  document.getElementById('location-panel').classList.remove('active');
+  document.querySelectorAll('.map-pin').forEach(p => p.classList.remove('active'));
+}
+</script>
+</body>
+</html>
